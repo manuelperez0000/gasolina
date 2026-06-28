@@ -8,6 +8,7 @@ import {
   collection,
   query,
   where,
+  orderBy,
   getDocs,
   addDoc,
   updateDoc,
@@ -43,6 +44,20 @@ export function useDashboard(): UseDashboardReturn {
   const [submitResult, setSubmitResult] = useState<SubmitResult | null>(null)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editingPlaca, setEditingPlaca] = useState('')
+  const [tipoVehiculo, setTipoVehiculo] = useState<'moto' | 'carro' | 'lancha'>(() => {
+    try {
+      const raw = window.localStorage.getItem('gasolina-tipo')
+      if (raw === 'moto' || raw === 'carro' || raw === 'lancha') return raw
+    } catch {}
+    return 'moto'
+  })
+  const [litros, setLitros] = useState<number>(0)
+  const [fecha, setFecha] = useState<string>(() => {
+    const d = new Date()
+    return d.toISOString().slice(0, 10)
+  })
+  const [comunidad, setComunidad] = useState<string>(() => 'La Horqueta')
+  const [apoyo, setApoyo] = useState<string>(() => 'general')
 
   const buscarRegistrosHoy = useCallback(async () => {
     setLoading(true)
@@ -52,6 +67,7 @@ export function useDashboard(): UseDashboardReturn {
         collection(db, REGISTROS_COLLECTION),
         where('fecha', '>=', start),
         where('fecha', '<', end),
+        orderBy('fecha', 'asc'),
       )
       const snapshot = await getDocs(q)
       const docs = snapshot.docs.map(
@@ -98,10 +114,29 @@ export function useDashboard(): UseDashboardReturn {
           }
         }
 
+        // prepare fecha value: use selected fecha (YYYY-MM-DD) or now
+        // parse YYYY-MM-DD into a local Date to avoid UTC timezone shifts
+        let fechaValue: Date = new Date()
+        if (fecha) {
+          const parts = fecha.split('-').map((p) => Number(p))
+          if (parts.length === 3 && parts.every((n) => !Number.isNaN(n))) {
+            const [y, m, d] = parts
+            fechaValue = new Date(y, m - 1, d)
+          } else {
+            fechaValue = new Date()
+          }
+        } else {
+          fechaValue = new Date()
+        }
+
         await addDoc(collection(db, REGISTROS_COLLECTION), {
           placa: placaUpper,
-          fecha: serverTimestamp(),
+          fecha: fechaValue,
           registradoPor: usernameValue,
+          litros: Number(litros) || 0,
+          comunidad: comunidad || 'La Horqueta',
+          apoyo: apoyo || 'general',
+          tipoVehiculo: tipoVehiculo,
         })
 
         await buscarRegistrosHoy()
@@ -117,7 +152,7 @@ export function useDashboard(): UseDashboardReturn {
         setLoading(false)
       }
     },
-    [buscarRegistrosHoy, user],
+    [buscarRegistrosHoy, user, fecha, litros, comunidad, apoyo, tipoVehiculo],
   )
 
   const editarPlaca = useCallback(
@@ -216,6 +251,13 @@ export function useDashboard(): UseDashboardReturn {
     buscarRegistrosHoy()
   }, [])
 
+  // persist tipoVehiculo
+  useEffect(() => {
+    try {
+      window.localStorage.setItem('gasolina-tipo', tipoVehiculo)
+    } catch {}
+  }, [tipoVehiculo])
+
   const handleStartEdit = (registro: { id?: string; placa: string }) => {
     if (!registro.id) return
     setEditingId(registro.id)
@@ -257,5 +299,15 @@ export function useDashboard(): UseDashboardReturn {
     handleSaveEdit,
     handleDelete,
     handleCancelEdit,
+    tipoVehiculo,
+    setTipoVehiculo,
+    litros,
+    setLitros,
+    fecha,
+    setFecha,
+    comunidad,
+    setComunidad,
+    apoyo,
+    setApoyo,
   }
 }

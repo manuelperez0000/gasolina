@@ -10,6 +10,10 @@ export interface RegistroGasolina {
   placa: string
   fecha: Date
   registradoPor: string
+  litros?: number
+  comunidad?: string
+  apoyo?: string
+  tipoVehiculo?: 'moto' | 'carro' | 'lancha'
 }
 
 import type { Dispatch, SetStateAction, FormEvent } from 'react'
@@ -60,4 +64,14 @@ export interface UseDashboardReturn {
   handleCancelEdit: () => void,
   handleStartEdit: (registro: { id?: string; placa: string }) => void,
   handleDelete: (id?: string) => Promise<void>
+  tipoVehiculo: 'moto' | 'carro' | 'lancha'
+  setTipoVehiculo: React.Dispatch<React.SetStateAction<'moto' | 'carro' | 'lancha'>>
+  litros: number
+  setLitros: React.Dispatch<React.SetStateAction<number>>
+  fecha: string
+  setFecha: React.Dispatch<React.SetStateAction<string>>
+  comunidad: string
+  setComunidad: React.Dispatch<React.SetStateAction<string>>
+  apoyo: string
+  setApoyo: React.Dispatch<React.SetStateAction<string>>
 } 

@@ -75,6 +75,7 @@ export function useAuth() {
           } catch (err) { console.log(err) }
         } catch (err) {
           // if profile load fails, still consider login successful
+          console.log('Error loading user profile after login:', err)
           setState((prev) => ({ ...prev, loading: false }))
         }
       }

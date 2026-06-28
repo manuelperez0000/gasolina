@@ -12,6 +12,7 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
+    "typeRoots": ["./src/types", "./node_modules/@types"],
     "noEmit": true,
     "jsx": "react-jsx",
 
