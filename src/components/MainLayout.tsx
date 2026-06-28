@@ -1,19 +1,29 @@
 import { Outlet, useNavigate } from "react-router-dom"
+import { useEffect } from 'react'
 import Navbar from "../components/Navbar"
 import { useAuth } from "../hooks/useAuth"
 
 const MainLayout = () => {
     const navigate = useNavigate()
-    const { user, logout } = useAuth()
+    const { user, logout, loading } = useAuth()
 
     const handleLogout = async () => {
         await logout()
         navigate('/login')
     }
 
+    useEffect(() => {
+        if (!loading && !user) {
+            navigate('/login')
+        }
+    }, [loading, user, navigate])
+
+    if (loading) return null
+    if (!user) return null
+
     return (
         <>
-            {user && <Navbar user={user} onLogout={handleLogout} />}
+            <Navbar user={user} onLogout={handleLogout} />
             <Outlet />
         </>
     )

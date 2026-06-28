@@ -46,7 +46,7 @@ export function useAuth() {
           // sync to zustand store and localStorage
           try {
             useUserStore.getState().setUser(userProfile)
-          } catch {}
+          } catch (err) { console.log(err) }
         } catch {
           setState({ user: null, loading: false, error: 'Error al cargar el usuario' })
         }
@@ -54,7 +54,7 @@ export function useAuth() {
         setState({ user: null, loading: false, error: null })
         try {
           useUserStore.getState().clearUser()
-        } catch {}
+        } catch (err) { console.log(err) }
       }
     })
 
@@ -72,7 +72,7 @@ export function useAuth() {
           setState({ user: userProfile, loading: false, error: null })
           try {
             useUserStore.getState().setUser(userProfile)
-          } catch {}
+          } catch (err) { console.log(err) }
         } catch (err) {
           // if profile load fails, still consider login successful
           setState((prev) => ({ ...prev, loading: false }))
@@ -86,8 +86,8 @@ export function useAuth() {
         code === 'auth/wrong-password' || code === 'auth/user-not-found'
           ? 'Credenciales inválidas'
           : code === 'auth/invalid-email'
-          ? 'Correo inválido'
-          : 'Error al iniciar sesión'
+            ? 'Correo inválido'
+            : 'Error al iniciar sesión'
       setState({ user: null, loading: false, error: message })
       return false
     }
@@ -109,7 +109,7 @@ export function useAuth() {
       setState({ user: null, loading: false, error: null })
       try {
         useUserStore.getState().clearUser()
-      } catch {}
+      } catch (err) { console.log(err) }
     }
   }, [])
 
