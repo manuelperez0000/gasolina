@@ -13,8 +13,7 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
-  doc,
-  serverTimestamp,
+  doc
 } from 'firebase/firestore'
 import { db } from '../db/firebase'
 import type { RegistroGasolina, SubmitResult, UseDashboardReturn } from '../types'
@@ -48,7 +47,9 @@ export function useDashboard(): UseDashboardReturn {
     try {
       const raw = window.localStorage.getItem('gasolina-tipo')
       if (raw === 'moto' || raw === 'carro' || raw === 'lancha') return raw
-    } catch {}
+    } catch(err) {
+      console.error('Error reading gasolina-tipo from localStorage:', err)
+    }
     return 'moto'
   })
   const [litros, setLitros] = useState<number>(0)
@@ -255,7 +256,9 @@ export function useDashboard(): UseDashboardReturn {
   useEffect(() => {
     try {
       window.localStorage.setItem('gasolina-tipo', tipoVehiculo)
-    } catch {}
+    } catch (err) {
+      console.error('Error writing gasolina-tipo to localStorage:', err)
+    }
   }, [tipoVehiculo])
 
   const handleStartEdit = (registro: { id?: string; placa: string }) => {
