@@ -1,0 +1,34 @@
+:root {
+  --color-primary: #4CAF50;
+  --color-secondary: #FF9800;
+  --text:rgb(50,50,50);
+}
+
+body{
+  background-color: rgb(233, 233, 233);
+  color: var(--text);
+}
+h1, h2, h3, h4, h5, h6{
+  color: var(--text);
+}
+
+/* Navbar custom styles */
+.nav-link-custom {
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  color: #fff;
+  text-decoration: none;
+  transition: transform 150ms ease, background-color 150ms ease;
+}
+.nav-link-custom:hover {
+  transform: translateY(-3px);
+  background-color: rgba(255,255,255,0.12);
+}
+.nav-link-custom.active {
+  background-color: rgba(255,255,255,0.22);
+}
+
+/* Ensure the navbar has a subtle shadow */
+.navbar {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
