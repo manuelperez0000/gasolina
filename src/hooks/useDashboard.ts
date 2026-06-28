@@ -68,12 +68,17 @@ export function useDashboard(): UseDashboardReturn {
         collection(db, REGISTROS_COLLECTION),
         where('fecha', '>=', start),
         where('fecha', '<', end),
-        orderBy('fecha', 'asc'),
+        orderBy('fecha', 'desc'),
       )
       const snapshot = await getDocs(q)
       const docs = snapshot.docs.map(
         (d) => ({ id: d.id, ...d.data() }) as RegistroGasolina,
       )
+      docs.sort((a, b) => {
+        const aTime = a.fecha instanceof Date ? a.fecha.getTime() : 0
+        const bTime = b.fecha instanceof Date ? b.fecha.getTime() : 0
+        return bTime - aTime
+      })
       setRegistros(docs)
     } finally {
       setLoading(false)
@@ -115,19 +120,23 @@ export function useDashboard(): UseDashboardReturn {
           }
         }
 
-        // prepare fecha value: use selected fecha (YYYY-MM-DD) or now
-        // parse YYYY-MM-DD into a local Date to avoid UTC timezone shifts
-        let fechaValue: Date = new Date()
+        // prepare fecha value: use selected fecha (YYYY-MM-DD) with current time or now if no date selected
+        const now = new Date()
+        let fechaValue: Date = now
         if (fecha) {
           const parts = fecha.split('-').map((p) => Number(p))
           if (parts.length === 3 && parts.every((n) => !Number.isNaN(n))) {
             const [y, m, d] = parts
-            fechaValue = new Date(y, m - 1, d)
-          } else {
-            fechaValue = new Date()
+            fechaValue = new Date(
+              y,
+              m - 1,
+              d,
+              now.getHours(),
+              now.getMinutes(),
+              now.getSeconds(),
+              now.getMilliseconds(),
+            )
           }
-        } else {
-          fechaValue = new Date()
         }
 
         await addDoc(collection(db, REGISTROS_COLLECTION), {

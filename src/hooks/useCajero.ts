@@ -37,13 +37,18 @@ export function useCajero(): UseCajeroReturn {
       collection(db, REGISTROS_COLLECTION),
       where('fecha', '>=', start),
       where('fecha', '<', end),
-      orderBy('fecha', 'asc'),
+      orderBy('fecha', 'desc'),
     )
 
     const unsubscribe = onSnapshot(
       q,
       (snapshot) => {
         const docs = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }) as RegistroGasolina)
+        docs.sort((a, b) => {
+          const aTime = a.fecha instanceof Date ? a.fecha.getTime() : 0
+          const bTime = b.fecha instanceof Date ? b.fecha.getTime() : 0
+          return bTime - aTime
+        })
         setRegistros(docs)
         setLoading(false)
       },
