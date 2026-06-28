@@ -47,12 +47,12 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="container" style={{ maxWidth: 600 }}>
+      <div className="container py-4" style={{ maxWidth: 600, width: '100%' }}>
         <div className="card shadow mb-4">
           <div className="card-body p-4">
             <h5 className="card-title">Registrar Surtido</h5>
             <form onSubmit={handleSubmit}>
-              <div className="mb-3 d-flex gap-2 align-items-center">
+              <div className="mb-3 d-flex flex-column flex-sm-row gap-2 align-items-start align-items-sm-center">
                 <div className="btn-group" role="group" aria-label="Tipo de vehiculo">
                   <button
                     type="button"
@@ -77,19 +77,19 @@ export default function Dashboard() {
                   </button>
                 </div>
 
-                <div className="ms-auto d-flex gap-2 align-items-center">
-                  <div className="input-group">
+                <div className="flex-fill d-flex flex-column gap-2 w-100">
+                  <div className="input-group w-100">
                     <span className="input-group-text">Litros</span>
                     <input type="number" className="form-control" value={litros} onChange={(e) => setLitros(Number(e.target.value))} min={0} />
                   </div>
 
-                  <div>
+                  <div className="w-100">
                     <input type="date" className="form-control" value={fecha} onChange={(e) => setFecha(e.target.value)} />
                   </div>
                 </div>
               </div>
 
-              <div className="mb-3 d-flex gap-2">
+              <div className="mb-3 d-flex flex-column flex-md-row gap-2">
                 <div className="flex-fill">
                   <label className="form-label small text-muted mb-1">Comunidad</label>
                   <input className="form-control" value={comunidad} onChange={(e) => setComunidad(e.target.value)} />
@@ -100,10 +100,10 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="input-group">
+              <div className="d-flex flex-column flex-sm-row gap-2">
                 <input
                   type="text"
-                  className="form-control form-control-lg text-uppercase"
+                  className="form-control form-control-lg text-uppercase flex-fill"
                   placeholder="Ingrese la placa"
                   value={placa}
                   onChange={(e) => setPlaca(e.target.value.toUpperCase())}
@@ -113,7 +113,7 @@ export default function Dashboard() {
                 />
                 <button
                   type="submit"
-                  className="btn btn-success btn-lg"
+                  className="btn btn-success btn-lg w-100 w-sm-auto"
                   disabled={loading}
                 >
                   {loading ? 'Registrando...' : 'Registrar'}
@@ -125,11 +125,11 @@ export default function Dashboard() {
 
         <div className="card shadow">
           <div className="card-body p-4">
-            <div className="d-flex align-items-center justify-content-between mb-3">
+            <div className="d-flex flex-column flex-md-row gap-2 align-items-start align-items-md-center justify-content-between mb-3">
               <h5 className="card-title mb-0">Registros de Hoy ({registros.length})</h5>
               <button
                 type="button"
-                className="btn btn-success btn-sm"
+                className="btn btn-success btn-sm w-100 w-md-auto"
                 onClick={async () => {
                   const workbook = new ExcelJS.Workbook()
                   const sheet = workbook.addWorksheet('Registros de Hoy')
@@ -194,7 +194,7 @@ export default function Dashboard() {
                   return (
                     <div
                       key={r.id}
-                      className="list-group-item d-flex justify-content-between align-items-center gap-3"
+                      className="list-group-item d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3"
                     >
                       {editingId === r.id ? (
                         <div className="d-flex flex-grow-1 gap-2 align-items-center">
@@ -226,7 +226,7 @@ export default function Dashboard() {
                         <>
                           <div>
                             <span className="fw-bold text-uppercase d-block">{r.placa}</span>
-                            <small className="text-muted d-flex gap-2 align-items-center">
+                            <small className="text-muted d-flex flex-wrap gap-2 align-items-center">
                               <TipoIcon />
                               <span>{r.litros ?? 0} L</span>
                               <span>• {r.apoyo ?? 'general'}</span>
