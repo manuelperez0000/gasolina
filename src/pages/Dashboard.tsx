@@ -47,43 +47,46 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="container py-4" style={{ maxWidth: 600, width: '100%' }}>
-        <div className="card shadow mb-4">
+      <div className="container p-1" style={{ maxWidth: 600, width: '100%' }}>
+        <div className="card shadow mb-1">
           <div className="card-body p-4">
-            <h5 className="card-title">Registrar Surtido</h5>
             <form onSubmit={handleSubmit}>
               <div className="mb-3 d-flex flex-column flex-sm-row gap-2 align-items-start align-items-sm-center">
-                <div className="btn-group" role="group" aria-label="Tipo de vehiculo">
-                  <button
-                    type="button"
-                    className={`btn ${tipoVehiculo === 'moto' ? 'btn-primary' : 'btn-outline-primary'}`}
-                    onClick={() => setTipoVehiculo('moto')}
-                  >
-                    <FaMotorcycle />
-                  </button>
-                  <button
-                    type="button"
-                    className={`btn ${tipoVehiculo === 'carro' ? 'btn-primary' : 'btn-outline-primary'}`}
-                    onClick={() => setTipoVehiculo('carro')}
-                  >
-                    <FaCar />
-                  </button>
-                  <button
-                    type="button"
-                    className={`btn ${tipoVehiculo === 'lancha' ? 'btn-primary' : 'btn-outline-primary'}`}
-                    onClick={() => setTipoVehiculo('lancha')}
-                  >
-                    <FaShip />
-                  </button>
+                <div className="d-flex align-items-center justify-content-between mb-1 w-100">
+
+                  <h5 className="card-title">Registrar Surtido</h5>
+                  <div className="btn-group" role="group" aria-label="Tipo de vehiculo">
+                    <button
+                      type="button"
+                      className={`btn ${tipoVehiculo === 'moto' ? 'btn-primary' : 'btn-outline-primary'}`}
+                      onClick={() => setTipoVehiculo('moto')}
+                    >
+                      <FaMotorcycle />
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn ${tipoVehiculo === 'carro' ? 'btn-primary' : 'btn-outline-primary'}`}
+                      onClick={() => setTipoVehiculo('carro')}
+                    >
+                      <FaCar />
+                    </button>
+                    <button
+                      type="button"
+                      className={`btn ${tipoVehiculo === 'lancha' ? 'btn-primary' : 'btn-outline-primary'}`}
+                      onClick={() => setTipoVehiculo('lancha')}
+                    >
+                      <FaShip />
+                    </button>
+                  </div>
                 </div>
 
                 <div className="flex-fill d-flex flex-column gap-2 w-100">
-                  <div className="input-group w-100">
-                    <span className="input-group-text">Litros</span>
-                    <input type="number" className="form-control" value={litros} onChange={(e) => setLitros(Number(e.target.value))} min={0} />
-                  </div>
+                  <div className="w-100 gap-2 d-flex justify-content-between align-items-center">
+                    <div className="input-group w-100">
+                      <span className="input-group-text">Litros</span>
+                      <input type="number" className="form-control" value={litros} onChange={(e) => setLitros(Number(e.target.value))} min={0} />
+                    </div>
 
-                  <div className="w-100">
                     <input type="date" className="form-control" value={fecha} onChange={(e) => setFecha(e.target.value)} />
                   </div>
                 </div>
@@ -173,7 +176,7 @@ export default function Dashboard() {
 
                   const buffer = await workbook.xlsx.writeBuffer()
                   const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-                  saveAs(blob, `surtidos-${tipoVehiculo}-${new Date().toISOString().slice(0,10)}.xlsx`)
+                  saveAs(blob, `surtidos-${tipoVehiculo}-${new Date().toISOString().slice(0, 10)}.xlsx`)
                 }}
               >
                 <RiFileExcel2Fill />

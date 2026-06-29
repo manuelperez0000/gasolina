@@ -1,6 +1,10 @@
+import { AiFillDashboard } from 'react-icons/ai'
 import type { Usuario } from '../types'
 
 import { NavLink } from "react-router-dom"
+import { RiAccountBoxLine } from 'react-icons/ri'
+import { IoPeople } from 'react-icons/io5'
+import { FaSignOutAlt } from 'react-icons/fa'
 
 interface NavbarProps {
   user: Usuario
@@ -9,7 +13,7 @@ interface NavbarProps {
 
 export default function Navbar({ user, onLogout }: NavbarProps) {
   return (
-    <nav className="navbar navbar-dark mb-4" style={{ backgroundColor: '#0d6efd' }}>
+    <nav className="navbar navbar-dark" style={{ backgroundColor: '#0d6efd' }}>
       <div className="container d-flex align-items-center">
         <span className="navbar-brand mb-0">Gasolina - ({user.rol})</span>
 
@@ -18,25 +22,25 @@ export default function Navbar({ user, onLogout }: NavbarProps) {
             to="/"
             className={({ isActive }) => `nav-link-custom text-light ${isActive ? 'active' : ''}`}
           >
-            Dashboard
+            <AiFillDashboard />
           </NavLink>
 
           <NavLink
             to="/cajero"
             className={({ isActive }) => `nav-link-custom text-light ${isActive ? 'active' : ''}`}
           >
-            Cajero
+            <RiAccountBoxLine />
           </NavLink>
 
           <NavLink
             to="/usuarios"
             className={({ isActive }) => `nav-link-custom text-light ${isActive ? 'active' : ''}`}
           >
-            Usuarios
+            <IoPeople />
           </NavLink>
 
-          <button className="btn btn-light btn-sm" onClick={onLogout}>
-            Cerrar Sesión
+          <button className="btn btn-danger btn-sm" onClick={onLogout}>
+            <FaSignOutAlt />
           </button>
         </div>
       </div>

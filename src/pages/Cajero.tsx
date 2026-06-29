@@ -16,20 +16,13 @@ const Cajero = () => {
 
   return (
     <div>
-      <div className="container" style={{ maxWidth: 700 }}>
-        <div className="card shadow mb-4">
-          <div className="card-body p-4">
-            <h3 className="card-title">Cajero</h3>
-            <p className="text-muted">Haz clic en una placa para actualizar la cantidad de litros.</p>
-          </div>
-        </div>
-
+      <div className="container p-1" style={{ maxWidth: 700 }}>
         <div className="card shadow">
-          <div className="card-body p-4">
+          <div className="card-body p-3">
             <div className="d-flex align-items-center justify-content-between mb-3">
               <h5 className="card-title mb-0">Placas registradas ({registros.length})</h5>
             </div>
-
+            
             {registros.length === 0 ? (
               <p className="text-muted mb-0">No hay registros por ahora.</p>
             ) : (
