@@ -4,6 +4,7 @@ import Login from "./pages/Login"
 import Dashboard from "./pages/Dashboard"
 import Cajero from "./pages/Cajero"
 import UserAdmin from "./pages/UserAdmin"
+import Historial from "./pages/Historial"
 
 const Router = () => {
     return (
@@ -12,6 +13,7 @@ const Router = () => {
             <Route element={<MainLayout />}>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/cajero" element={<Cajero />} />
+                <Route path="/historial" element={<Historial />} />
                 <Route path="/usuarios" element={<UserAdmin />} />
             </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />

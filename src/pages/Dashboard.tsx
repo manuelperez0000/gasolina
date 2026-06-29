@@ -5,6 +5,7 @@ import { HiPencilSquare } from 'react-icons/hi2'
 import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
 import { RiFileExcel2Fill } from "react-icons/ri";
+import { useMemo, useState } from 'react'
 
 
 function parseFecha(value: unknown): Date | null {
@@ -44,6 +45,16 @@ export default function Dashboard() {
     apoyo,
     setApoyo,
   } = useDashboard()
+
+  const [filtroPlaca, setFiltroPlaca] = useState('')
+
+  const registrosFiltrados = useMemo(() => {
+    const filtro = filtroPlaca.trim().toUpperCase()
+
+    if (!filtro) return registros
+
+    return registros.filter((registro) => registro.placa.toUpperCase().includes(filtro))
+  }, [registros, filtroPlaca])
 
   return (
     <div>
@@ -128,11 +139,23 @@ export default function Dashboard() {
 
         <div className="card shadow">
           <div className="card-body p-4">
-            <div className="d-flex flex-column flex-md-row gap-2 align-items-start align-items-md-center justify-content-between mb-3">
-              <h5 className="card-title mb-0">Registros de Hoy ({registros.length})</h5>
+            <div className="d-flex flex-row flex-wrap gap-2 align-items-center justify-content-between mb-3">
+              <div className="d-flex flex-row align-items-center gap-2 flex-wrap flex-grow-1">
+                <h5 className="card-title mb-0">{registrosFiltrados.length} registros</h5>
+                <div className="input-group input-group-sm" style={{ minWidth: 220, flex: '1 1 220px' }}>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Buscar"
+                    value={filtroPlaca}
+                    onChange={(e) => setFiltroPlaca(e.target.value.toUpperCase())}
+                  />
+                </div>
+              </div>
               <button
                 type="button"
-                className="btn btn-success btn-sm w-100 w-md-auto"
+                className="btn btn-success btn-sm d-flex align-items-center justify-content-center"
+                style={{ width: 38, height: 38, padding: 0 }}
                 onClick={async () => {
                   const workbook = new ExcelJS.Workbook()
                   const sheet = workbook.addWorksheet('Registros de Hoy')
@@ -154,7 +177,7 @@ export default function Dashboard() {
                     fgColor: { argb: 'FF0D6EFD' },
                   }
 
-                  registros.forEach((registro) => {
+                  registrosFiltrados.forEach((registro) => {
                     const fechaObj = parseFecha(registro.fecha)
                     const fechaStr = fechaObj ? fechaObj.toLocaleDateString() : ''
                     const tipo = registro.tipoVehiculo === 'carro' ? 'Carro' : registro.tipoVehiculo === 'lancha' ? 'Lancha' : 'Moto'
@@ -182,13 +205,13 @@ export default function Dashboard() {
                 <RiFileExcel2Fill />
               </button>
             </div>
-            {registros.length === 0 ? (
+            {registrosFiltrados.length === 0 ? (
               <p className="text-muted mb-0">
                 No hay registros por ahora.
               </p>
             ) : (
               <div className="list-group">
-                {registros.map((r) => {
+                {registrosFiltrados.map((r) => {
                   const fechaObj = parseFecha(r.fecha)
                   const fechaStr = fechaObj ? fechaObj.toLocaleDateString() : ''
 

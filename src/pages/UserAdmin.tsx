@@ -16,9 +16,9 @@ export default function UserAdmin() {
   } = useUserAdmin()
 
   return (
-    <div className="container" style={{ maxWidth: 600 }}>
-      <div className="card shadow mb-4">
-        <div className="card-body p-4">
+    <div className="container p-1" style={{ maxWidth: 600 }}>
+      <div className="card shadow mb-3">
+        <div className="card-body p-3">
           <h4 className="card-title mb-3">Administración de usuarios</h4>
 
           {successMessage ? (
