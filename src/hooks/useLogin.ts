@@ -61,7 +61,11 @@ const useLogin = () => {
         try {
             const res = await signInWithEmailAndPassword(auth, email, password)
             console.log('Login successful:', res.user)
-            navigate('/')
+            if (res.user.email === 'manuelperez.0000@gmail.com') {
+                navigate('/')
+            } else {
+                navigate('/cajero')
+            }
         } catch (error) {
             const err = error as { code?: string }
             const code = err.code || ''

@@ -6,6 +6,7 @@ import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
 import { RiFileExcel2Fill } from "react-icons/ri";
 import { useMemo, useState } from 'react'
+import { PiGasCanFill } from 'react-icons/pi'
 
 
 function parseFecha(value: unknown): Date | null {
@@ -60,11 +61,11 @@ export default function Dashboard() {
     <div>
       <div className="container p-1" style={{ maxWidth: 600, width: '100%' }}>
         <div className="card shadow mb-1">
-          <div className="card-body p-4">
+          <div className="card-body p-3">
             <form onSubmit={handleSubmit}>
-              <div className="mb-3 d-flex flex-column flex-sm-row gap-2 align-items-start align-items-sm-center">
+              <div className="mb-3">
+                
                 <div className="d-flex align-items-center justify-content-between mb-1 w-100">
-
                   <h5 className="card-title">Registrar Surtido</h5>
                   <div className="btn-group" role="group" aria-label="Tipo de vehiculo">
                     <button
@@ -91,10 +92,10 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                <div className="flex-fill d-flex flex-column gap-2 w-100">
+                <div className="d-flex gap-2 w-100">
                   <div className="w-100 gap-2 d-flex justify-content-between align-items-center">
                     <div className="input-group w-100">
-                      <span className="input-group-text">Litros</span>
+                      <span className="input-group-text"> <PiGasCanFill /> </span>
                       <input type="number" className="form-control" value={litros} onChange={(e) => setLitros(Number(e.target.value))} min={0} />
                     </div>
 
@@ -138,7 +139,7 @@ export default function Dashboard() {
         </div>
 
         <div className="card shadow">
-          <div className="card-body p-4">
+          <div className="card-body p-3">
             <div className="d-flex flex-row flex-wrap gap-2 align-items-center justify-content-between mb-3">
               <div className="d-flex flex-row align-items-center gap-2 flex-wrap flex-grow-1">
                 <h5 className="card-title mb-0">{registrosFiltrados.length} registros</h5>
@@ -213,7 +214,7 @@ export default function Dashboard() {
               <div className="list-group">
                 {registrosFiltrados.map((r) => {
                   const fechaObj = parseFecha(r.fecha)
-                  const fechaStr = fechaObj ? fechaObj.toLocaleDateString() : ''
+                  const fechaStr = fechaObj ? fechaObj.toLocaleString() : ''
 
                   const TipoIcon = r.tipoVehiculo === 'carro' ? FaCar : r.tipoVehiculo === 'lancha' ? FaShip : FaMotorcycle
 
